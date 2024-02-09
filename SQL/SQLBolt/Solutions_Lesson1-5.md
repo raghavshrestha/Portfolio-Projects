@@ -42,7 +42,7 @@
 4. List the next 5 Pixar movies sorted alphabetically<br>
     SELECT title from movies ORDER BY title LIMIT 5 OFFSET 5;
 
-### SQL Lesson 4: Simple SELECT Queries
+### SQL Lesson : Simple SELECT Queries
 1. List all the Canadian cities and their populations<br>
 SELECT city, population FROM north_american_cities
 where country='Canada';
