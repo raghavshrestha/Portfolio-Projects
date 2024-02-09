@@ -1,4 +1,4 @@
-@Source SQLBolt
+Source: @SQLBolt (https://sqlbolt.com/lesson/)
 
 ### SQL Lesson 1: SELECT queries 101
 1. Find the title of each film<br>
