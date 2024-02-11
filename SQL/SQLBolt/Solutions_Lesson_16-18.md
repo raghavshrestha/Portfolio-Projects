@@ -17,3 +17,9 @@ Download_count INTEGER);
 ``` alter table movies add Aspect_ratio FLOAT; ```
 2. Add another column named Language with a TEXT data type to store the language that the movie was released in. Ensure that the default for this language is English.<br>
 ``` alter table movies add Language TEXT default 'English'; ```
+
+### SQL Lesson 18: Dropping tables
+1. We've sadly reached the end of our lessons, lets clean up by removing the Movies table.<br>
+``` drop table movies; ```
+3. And drop the Boxoffice table as well.<br>
+``` drop table Boxoffice; ```
