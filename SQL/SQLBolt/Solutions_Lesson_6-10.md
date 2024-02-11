@@ -54,3 +54,73 @@ left join employees e on
 b.building_name = e.building
 where e.building is null;
 ```
+
+### SQL Lesson 9: Queries with Expressions
+1. List all movies and their combined sales in millions of dollars<br>
+```
+SELECT m.title, (bo.Domestic_sales + bo.International_sales)/1000000 AS Total_Sales
+ FROM movies m inner join Boxoffice bo ON m.Id=bo.movie_Id;
+```
+2. List all movies and their ratings in percent<br>
+```
+SELECT m.title, (bo.rating * 10) AS Rating_percent
+FROM movies m inner join Boxoffice bo ON m.Id=bo.movie_Id;
+```
+3. List all movies that were released on even number years <br>
+```
+SELECT title from movies
+where year%2=0
+```
+### SQL Lesson 10: Querieswith Aggregates (Pt. 1)
+1. Find the longest time that an employee has been at the studio<br>
+```SELECT max(years_employed) as Longest_time FROM employees;```
+2. For each role, find the average number of years employed by employees in that role<br>
+```SELECT role, avg(years_employed) as Avg_Years FROM employees group by role; ```
+3. Find the total number of employee years worked in each building <br>
+```
+SELECT building, SUM(years_employed) as Total_years_employed
+FROM employees
+GROUP BY building;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
