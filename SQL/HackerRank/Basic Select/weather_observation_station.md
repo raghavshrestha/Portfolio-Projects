@@ -1,7 +1,7 @@
 Source: <b>@HackerRank</b> (https://www.hackerrank.com/challenges/)
 
 ## Weather Observation Station
-#### Problem statement and solutions: 
+#### Problem 1: 
 Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.<br>
 ```` select NAME from city where COUNTRYCODE='USA' and POPULATION >120000; ````
 <br> <br>
@@ -50,3 +50,16 @@ SELECT DISTINCT CITY FROM STATION WHERE
 LEFT(CITY,1) NOT IN ('A', 'E',' I',' O', 'U') and
 RIGHT(CITY,1) NOT IN ('A', 'E',' I',' O', 'U');
 ```
+<br>
+
+#### Problem 2 Higher than 75 Marks: 
+Query the name of any student in STUDENTS who scored higher than 75 marks. Order your output by the last three characters of each name. If two or more students both have names ending in the same last three characters(i.e.: Bobby, Robby, etc), secondary sort them by ascending ID.<br>
+``` select name from students where marks >75 order by right(name,3) asc, id asc ; ```
+
+#### Problem 3 Employee Table:
+Write a query that prints a list of employee names(i.e.: the name attribute) from the Employee table in alphabetical order.<br>
+``` select name from employee order by name asc; ```
+<br>
+Write a query that prints a list of employee names(i.e: the name attribute) for employees in the employee table having 
+a salary greater than $2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.<br>
+``` select name from employee where salary > 2000 and months < 10; ```
