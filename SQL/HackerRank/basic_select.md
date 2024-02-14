@@ -1,7 +1,7 @@
 Source: <b>@HackerRank</b> (https://www.hackerrank.com/challenges/)
 
-## Weather Observation Station
-#### Problem 1: 
+## Basic Select
+#### Problem 1 Weather Observation Station: 
 Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.<br>
 ```` select NAME from city where COUNTRYCODE='USA' and POPULATION >120000; ````
 <br> <br>
