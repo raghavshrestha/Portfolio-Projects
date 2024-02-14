@@ -1,7 +1,7 @@
 Source: <b>@HackerRank</b> (https://www.hackerrank.com/challenges/)
 
-
-#### Problem 1: Weather Observation Station
+## Weather Observation Station
+#### Problem statement and solutions: 
 Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.<br>
 ```` select NAME from city where COUNTRYCODE='USA' and POPULATION >120000; ````
 <br> <br>
@@ -50,6 +50,3 @@ SELECT DISTINCT CITY FROM STATION WHERE
 LEFT(CITY,1) NOT IN ('A', 'E',' I',' O', 'U') and
 RIGHT(CITY,1) NOT IN ('A', 'E',' I',' O', 'U');
 ```
-#### Problem 8:
-#### Problem 9:
-#### Problem 10:
