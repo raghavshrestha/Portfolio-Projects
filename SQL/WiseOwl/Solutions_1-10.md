@@ -42,3 +42,7 @@ select top 2
 ```
 </b>
 <i> Select the "Result to text" option from the Toolbar for redirecting output to text. </i>
+
+<br><br><br>
+
+<i>*** Module completed ***</i>
