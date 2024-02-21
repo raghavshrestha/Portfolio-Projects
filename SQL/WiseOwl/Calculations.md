@@ -102,7 +102,18 @@ select
 	order by country asc
 ```
 
-Q.
-<br>
+Q.<b>Use the CHARINDEX function multiple times to show the number of characters between two words in a text string.</b><br>
+The aim of this exercise is to find "this" and "that" in the EventDetails using CHARINDEX() function.
 ```
+select 
+	eventName,
+	CHARINDEX('this',eventDetails,1) AS [thisPosition],
+	CHARINDEX('that',eventDetails,1) AS [thatPosition],
+	CHARINDEX('that',eventDetails,1) - CHARINDEX('this',eventDetails,1) AS [Offset]
+	from tblEvent
+	where eventDetails like('%this%') AND eventDetails like ('%that%')
+	AND CHARINDEX('that',eventDetails,1) > CHARINDEX('this',eventDetails,1)
 ```
+
+
+<i>*** Module Completed ***</i>
