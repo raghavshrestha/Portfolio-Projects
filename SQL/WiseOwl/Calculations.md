@@ -49,20 +49,57 @@ select
 	from tblContinent
 ```
 
-Q. <b> Write a CASE WHEN expression to assign countries to different groups.<b><br>
+Q. <b> Write a CASE WHEN expression to assign countries to different groups.</b><br>
 Write a query to divide countries into the groups.
 <br>
 ```
+select 
+	countryName, 
+	case
+		when ContinentID in (1,3) then 'Eurasia'
+		when ContinentID in (5,6) then 'Americas'
+		when ContinentID in (2,4) then 'Somewhere hot'
+		when ContinentID =7 then 'Somewhere cold'
+		else 'Somewhere else'
+	end AS [Countrylocation]
+	from tblCountry
+	order by [Countrylocation] desc
 ```
 
-Q.
-<br>
+Q. <b>Divide events according to whether their first/last letters are the same or vowels.</b><br>
 ```
+select 
+	eventName,
+	case
+		when left(eventName,1) = right(eventName,1) then 'Same Letters'
+		when left(eventName,1) in('a','e','i','o','u') and
+		right(eventName,1) in('a','e','i','o','u') then 'Begins and Ends with Vowels'
+		else 'Mixtures'
+	end AS [Verdicts]
+
+	from tblEvent
+	where
+		left(eventName,1) = right(eventName,1) OR
+		(
+		left(eventName,1) in('a','e','i','o','u') and
+		right(eventName,1) in('a','e','i','o','u') )
+
 ```
 
-Q.
-<br>
+Q. <b>Use the % modulus operator and a lot of ingenuity to show how big each country is relative to Wales</b><br>
+
 ```
+select
+	country,Kmsquared,
+	kmsquared/20761 AS [WalesUnits],
+	kmsquared - kmsquared/20761*20761 AS [AreaLeftOver],
+	CASE
+		when kmsquared/20761 <=0 then 'Smaller than Wales'
+		else CONCAT((KmSquared - (KmSquared % 20761))/20761, 
+					' x Wales plus ', KmSquared % 20761, ' sq. km.')
+	end  AS WalesComparison
+	from countriesbyarea
+	order by country asc
 ```
 
 Q.
