@@ -34,8 +34,68 @@ select
 	having count(*) > 8
 ```
 Q. <b>Using sub queries filter the select statement. </b><br>
+Write a SELECT statment to return events from 3 continents with the fewest events.
 ```
+select 
+	top(3) tc.ContinentName, te.EventName
+	from tblContinent tc
+	inner join tblCountry tc1 on tc.ContinentID = tc1.ContinentID
+	inner join tblEvent te on tc1.CountryID = te.CountryID;
+```
+Now underneath write another select statement which lists events for the 3 continents with the lowest COUNT events. Put the COUNT in the ORDER BY clause, not the SELECT.
+```
+select 
+	top(3) tc.ContinentName
+	from tblContinent tc
+	inner join tblCountry tc1 on tc.ContinentID = tc1.ContinentID
+	inner join tblEvent te on tc1.CountryID = te.CountryID
+	group by tc.ContinentName
+	order by count(*) asc
+```
+Finally, use the second SELECT as a filter in the first SELECT's WHERE clause. To do this use ContinentName IN (Sub Query)
+```
+select 
+	tc.ContinentName, te.EventName
+	from tblContinent tc
+	inner join tblCountry tc1 on tc.ContinentID = tc1.ContinentID
+	inner join tblEvent te on tc1.CountryID = te.CountryID
+	where tc.ContinentName in ( select distinct ContinentName from tblContinent)
 ```
 Q. <b>Use two subqueries to list all events in neither the last 30 countries or the last 15 categories. </b><br>
+Create a subquery to list out all of those events whose:<br>
+* CountryID is not in the list of the last 30 country IDs in alphabetical order
 ```
+  select
+	TOP(30) te.EventName, te.EventDetails
+	from tblEvent te
+	left outer join tblCountry tC on te.CountryID = tC.CountryID
+	where te.CountryID not in
+	(select top(30) CountryID from tblCountry order by CountryName desc);
 ```
+
+* Category ID is not in the list of the last 15 category IDs in alphabetical order
+
+```
+select 
+	TOP(15) tE.eventName, tE.EventDetails
+	from tblEvent tE
+	left outer join tblCategory tC on tE.CategoryID = tC.CategoryID
+	where tE.CategoryID not in
+		(select top(15) CategoryID from tblCategory order by CategoryName desc)
+```
+<br>
+To produce only 8 events combine the above query for desired output.
+
+```
+select
+	TOP(30) te.EventName, te.EventDetails
+	from tblEvent te
+	left outer join tblCountry tC on te.CountryID = tC.CountryID
+	left outer join tblCategory tCa on tE.CategoryID = tCa.CategoryID
+	where te.CountryID not in
+	        (select top(30) CountryID from tblCountry order by CountryName desc)
+	and tE.CategoryID not in
+		(select top(15) CategoryID from tblCategory order by CategoryName desc);
+```
+
+<i>**** Module Completed ****</i>
