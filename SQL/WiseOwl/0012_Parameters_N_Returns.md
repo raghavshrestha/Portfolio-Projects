@@ -40,11 +40,39 @@ END
 
 Q. <b> Create a stored procedure to list Dr Who episodes for a series number, using a default parameter value.</b><br>
 ```
-
+USE DoctorWho
+GO
+CREATE PROC spListEpisodes @SeriesNum AS INT = NULL
+AS
+BEGIN
+	SELECT 
+		Title
+		FROM tblEpisode
+		WHERE SeriesNumber = @SeriesNum OR @SeriesNum IS NULL
+END
 ```
 
 Q. <b>Create a stored procedure with NULLs as the default values. </b><br>
 ```
+USE WorldEvents
+GO
+DROP PROC IF EXISTS uspCategoryEvents
+GO
+CREATE PROC uspCategoryEvents 
+	(@CategoryName VARCHAR(100) = NULL,
+	@After AS DATETIME = NULL,
+	@CategoryID AS INT = NULL)
+AS
+BEGIN
+SELECT       
+	TC.CategoryName, TE.EventDate, TE.CategoryID
+	FROM tblCategory TC
+	INNER JOIN tblEvent TE ON TC.CategoryID = TE.CategoryID
+	WHERE
+	(TC.CategoryID = @CategoryID OR @CategoryID IS NULL) AND
+	(TC.CategoryName  LIKE '%' + @CategoryName + '%' OR @CategoryName IS NULL) AND
+	(TE.EventDate >= @After OR @After IS NULL)
+END
 ```
 
 Q. <b>	Create stored procedures with default values for the parameters. </b><br>
