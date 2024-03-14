@@ -77,22 +77,113 @@ END
 
 Q. <b>	Create stored procedures with default values for the parameters. </b><br>
 ```
+USE WorldEvents
+GO
+CREATE PROC	uspContinentEvents
+	(@Con_Name AS VARCHAR(50) = NULL,
+	@After DATETIME = NULL,	@Before DATETIME = NULL)
+AS
+BEGIN
+	SELECT 
+		TC.ContinentName, TE.EventName, TE.EventDate
+		FROM tblContinent TC
+		INNER JOIN tblCountry TCO ON TCO.ContinentID = TC.ContinentID
+		INNER JOIN TBLEVENT TE ON TCO.CountryID = TE.CountryID
+		WHERE 
+			(TC.ContinentName = @CON_NAME OR @CON_NAME IS NULL) AND
+			(TE.EventDate >= @After OR @After IS NULL) AND
+			(TE.EventDate <= @Before OR @Before IS NULL)
+END
 ```
 
 Q. <b> Filter in a stored procedure using a parameter.</b><br>
 ```
+USE WorldEvents
+GO
+CREATE PROC spCountryEvents
+	(@Country_Name AS VARCHAR(20) = NULL)
+AS
+BEGIN
+SELECT 
+	TE.EVENTNAME, TE.EventDate, TC.CountryName
+	FROM tblEvent TE
+	INNER JOIN tblCountry TC ON TC.CountryID = TE.CountryID
+	WHERE 
+		TC.CountryName LIKE '%' + @Country_Name + '%' OR
+		@Country_Name IS NULL
+END
 ```
 
 Q. <b>Use an output parameter to return a list variable of the most eventful continents. </b><br>
 ```
+USE WorldEvents
+GO
+DECLARE @CON_NAME AS VARCHAR(MAX) =''
+SELECT
+	@CON_NAME = @CON_NAME + 
+		CASE 
+			WHEN LEN(@CON_NAME) > 0 THEN ' ' 
+			-- can include ', ' to separate continent name but have used
+			-- space in between
+			ELSE ''
+		END +		
+		ContinentName
+		FROM tblContinent TC
+		INNER JOIN tblCountry TCC
+			ON TCC.ContinentID = TC.ContinentID
+		INNER JOIN tblEvent TE
+			ON TE.CountryID = TCC.CountryID
+			GROUP BY CONTINENTNAME
+			HAVING COUNT(*) >= 50
+SELECT left(@CON_NAME,len(@con_name)-1) AS [Big Happenings]
 ```
 
 Q. <b>Use return values to bring back an INT return value from a stored procedure. </b><br>
 ```
+use WorldEvents
+go
+create proc uspHowMuchLonger
+AS
+declare @difference int = 0
+BEGIN
+	select 
+		@difference = max(len(eventname)) - min(len(eventname))
+		from tblEvent
+	RETURN @difference
+END
+declare @diff AS int
+exec @diff = uspHowMuchLonger
+print @diff
 ```
 
 Q. <b>Count rows and pass the information out of a procedure using output parameters. </b><br>
 ```
+use DoctorWho
+go
+drop proc if exists spGoodAndBad
+GO
+create proc spGoodAndBad
+AS
+declare @SeriesNumber int = 1
+
+declare @NumEnemies int =
+	( Select count(distinct(tee.EnemyId))
+		from tblEpisodeEnemy TEE
+		inner join tblEpisode TE
+		ON te.EpisodeId = tee.EpisodeId
+		where TE.SeriesNumber = @SeriesNumber )
+
+declare @NumCompanions int = 
+	( select count(distinct(tec.CompanionId))
+		from tblEpisodeCompanion TEC
+		inner join tblEpisode te
+		on te.EpisodeId = TEC.EpisodeId
+		where TE.SeriesNumber = @SeriesNumber )
+
+select
+	@SeriesNumber AS [Series Number],
+	@NumEnemies AS [Number of Enemies],
+	@NumCompanions AS [Number of Companions]
 ```
 
 Q. <b>Return a continent name from one procedure, and pass the output value into another. </b><br>
