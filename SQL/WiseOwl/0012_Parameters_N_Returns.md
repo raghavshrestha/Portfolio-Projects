@@ -188,6 +188,47 @@ select
 
 Q. <b>Return a continent name from one procedure, and pass the output value into another. </b><br>
 ```
+use WorldEvents
+go
+drop proc if exists spContinentName
+go
+create proc spContinentName
+( @First_Con_name as VARCHAR(30) = null output)
+AS
+BEGIN
+select 
+	top 1 @First_Con_name = tc.ContinentName
+	from tblEvent te
+	inner join tblCountry tcc
+		on tcc.CountryID = te.CountryID
+	inner join tblContinent tc
+	on tc.ContinentID = tcc.ContinentID
+	order by te.EventDate asc
+END
+-- 2nd Statement
+drop proc if exists spContinentEvents
+go
+create proc spContinentEvents @Con_name AS VARCHAR(30) = NULL
+AS
+BEGIN
+	select 
+	te.EventName, te.EventDate,tc.ContinentName
+	from tblEvent te
+	inner join tblCountry tcc
+		on tcc.CountryID = te.CountryID
+	inner join tblContinent tc
+	on tc.ContinentID = tcc.ContinentID
+	where tc.ContinentName = @Con_name or
+	@Con_name is null
+
+END
+-- Verifying the script execution and results if satisfied
+declare @var varchar(100)=''
+exec spContinentName
+@First_Con_name = @var OUTPUT
+select @var
+exec spContinentEvents 
+@Con_name = @var
 ```
 
 Q. <b>Return from a stored proecure the name of the country with the most events and how many events there were. </b><br>
